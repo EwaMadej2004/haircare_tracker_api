@@ -1,3 +1,13 @@
 from django.contrib import admin
+from .models import (
+    HairProfile,
+    HairProduct,
+    HairRoutineEntry,
+    HairTip,
+)
 
-# Register your models here.
+admin.site.register(HairProfile)
+admin.site.register(HairProduct)
+admin.site.register(HairRoutineEntry)
+admin.site.register(HairTip)
+
