@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hair_app',
+    'rest_framework.authtoken', 
     'rest_framework', 
 ]
 
