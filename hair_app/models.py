@@ -6,7 +6,7 @@ User = get_user_model()
 
 class HairProfile(models.Model):
     """
-    Profil włosów użytkownika – dane osobowe + ankieta o włosach.
+    Profil włosów użytkownika dane osobowe + ankieta o włosach.
     Podpięte 1:1 pod konto użytkownika.
     """
 
@@ -38,7 +38,6 @@ class HairProfile(models.Model):
         help_text="Konto użytkownika powiązane z tym profilem włosów.",
     )
 
-    # Dane profilowe
     imie = models.CharField("Imię", max_length=50)
     nazwisko = models.CharField("Nazwisko", max_length=100)
     plec = models.CharField(
@@ -48,7 +47,7 @@ class HairProfile(models.Model):
         default=Gender.other,
     )
 
-    # Ankieta włosowa
+    
     porowatosc = models.CharField(
         "Porowatość",
         max_length=4,
@@ -89,7 +88,7 @@ class HairProfile(models.Model):
 
 class HairProduct(models.Model):
     """
-    Produkt do włosów – używany w podpowiedzi pielęgnacyjnej.
+    Produkt do włosów używany w podpowiedzi pielęgnacyjnej.
     """
 
     class Category(models.TextChoices):
@@ -109,13 +108,13 @@ class HairProduct(models.Model):
     )
     description = models.TextField("Opis", blank=True)
 
-    # Dopasowanie do typu włosów – do rekomendacji
+    
     suitable_porosity = models.CharField(
         "Dla jakiej porowatości",
         max_length=4,
         choices=HairProfile.Porosity.choices,
         blank=True,
-        help_text="Opcjonalnie – jeśli produkt jest szczególnie polecany dla danego typu porowatości.",
+        help_text="Opcjonalnie jeśli produkt jest szczególnie polecany dla danego typu porowatości.",
     )
     suitable_curl_type = models.CharField(
         "Dla jakiego typu skrętu",
@@ -127,13 +126,13 @@ class HairProduct(models.Model):
     is_featured = models.BooleanField(
         "Polecany produkt",
         default=False,
-        help_text="Jeśli zaznaczone – może się pojawiać w sekcji podpowiedzi pielęgnacyjnej.",
+        help_text="Jeśli zaznaczone może się pojawiać w sekcji podpowiedzi pielęgnacyjnej.",
     )
 
     shop_url = models.URLField(
         "Link do sklepu",
         blank=True,
-        help_text="Jeśli macie docelowo sklep – tu można dodać link do zakupu.",
+        help_text="Jeśli macie docelowo sklep tu można dodać link do zakupu.",
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -233,16 +232,3 @@ class HairTip(models.Model):
 
     def __str__(self):
         return self.title
-
-
-
-
-
-
-
-
-
-
-
-
-
