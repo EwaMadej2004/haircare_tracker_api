@@ -114,7 +114,7 @@ class HairProduct(models.Model):
         max_length=4,
         choices=HairProfile.Porosity.choices,
         blank=True,
-        help_text="Opcjonalnie jeśli produkt jest szczególnie polecany dla danego typu porowatości.",
+        help_text="Co robi produkt dla tego typu porowatości.",
     )
     suitable_curl_type = models.CharField(
         "Dla jakiego typu skrętu",
@@ -126,13 +126,13 @@ class HairProduct(models.Model):
     is_featured = models.BooleanField(
         "Polecany produkt",
         default=False,
-        help_text="Jeśli zaznaczone może się pojawiać w sekcji podpowiedzi pielęgnacyjnej.",
+        help_text="Pojawienie sie w sekcji podpowiedzi pielęgnacji.",
     )
 
     shop_url = models.URLField(
         "Link do sklepu",
         blank=True,
-        help_text="Jeśli macie docelowo sklep tu można dodać link do zakupu.",
+        help_text="Link do sklepu gdzie można kupić dany produkt.",
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -209,7 +209,7 @@ class HairTip(models.Model):
         max_length=4,
         choices=HairProfile.Porosity.choices,
         blank=True,
-        help_text="Zostaw puste, jeśli porada jest ogólna.",
+        help_text="Zostaw puste, jeśli porada ogólna.",
     )
     skret = models.CharField(
         "Typ skrętu docelowy",
