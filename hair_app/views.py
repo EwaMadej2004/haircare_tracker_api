@@ -113,12 +113,22 @@ class RegisterView(generics.CreateAPIView):
 from .models import HairRoutineEntry
 from .serializers import HairRoutineEntrySerializer
 
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def my_hair_routines(request):
-    routines = HairRoutineEntry.objects.filter(user=request.user)
-    serializer = HairRoutineEntrySerializer(routines, many=True)
-    return Response(serializer.data)
+
+    if request.method == "GET":
+        routines = HairRoutineEntry.objects.filter(user=request.user)
+        serializer = HairRoutineEntrySerializer(routines, many=True)
+        return Response(serializer.data)
+
+    if request.method == "POST":
+        serializer = HairRoutineEntrySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
