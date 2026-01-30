@@ -63,10 +63,18 @@ class HairTipSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
-    
-    hair_type = serializers.CharField()
-    porosity = serializers.CharField()
-    hair_length = serializers.CharField()
+    skret = serializers.ChoiceField(
+        choices=HairProfile.CURL_TYPE,
+        write_only=True
+    )
+    porowatosc = serializers.ChoiceField(
+        choices=HairProfile.POROSITY,
+        write_only=True
+    )
+    dlugosc = serializers.ChoiceField(
+        choices=HairProfile.HAIR_LENGTH,
+        write_only=True
+    )
 
     class Meta:
         model = User
@@ -74,15 +82,15 @@ class RegisterSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'password',
-            'hair_type',
-            'porosity',
-            'hair_length',
+            'skret',
+            'porowatosc',
+            'dlugosc',
         ]
 
     def create(self, validated_data):
-        hair_type = validated_data.pop('hair_type')
-        porosity = validated_data.pop('porosity')
-        hair_length = validated_data.pop('hair_length')
+        skret = validated_data.pop('skret')
+        porowatosc = validated_data.pop('porowatosc')
+        dlugosc = validated_data.pop('dlugosc')
 
         user = User.objects.create_user(
             username=validated_data['username'],
@@ -92,9 +100,10 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         HairProfile.objects.create(
             user=user,
-            hair_type=hair_type,
-            porosity=porosity,
-            hair_length=hair_length
+            skret=skret,
+            porowatosc=porowatosc,
+            dlugosc=dlugosc
         )
 
         return user
+
