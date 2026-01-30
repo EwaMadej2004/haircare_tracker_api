@@ -10,26 +10,32 @@ class HairProfile(models.Model):
     Podpięte 1:1 pod konto użytkownika.
     """
 
-    class Gender(models.TextChoices):
-        female = "K", "Kobieta"
-        male = "M", "Mężczyzna"
-        other = "I", "Inna"
+  
 
-    class Porosity(models.TextChoices):
-        low = "Low", "Niskoporowate"
-        medium = "Med", "Średnioporowate"
-        high = "High", "Wysokoporowate"
+    GENDER = (
+        ("K", "Kobieta"),
+        ("M", "Mezczyzna"),
+        ("O", "Other")
+    )
 
-    class HairLength(models.TextChoices):
-        SHORT = "S", "Krótkie"
-        MEDIUM = "M", "Średnie"
-        LONG = "L", "Długie"
+    POROSITY = (
+        ("Low", "Niskoporowate"),
+        ("Med", "Średnioporowate"),
+        ("High", "Wysokoporowate"),
+    )
 
-    class CurlType(models.TextChoices):
-        straight = "1", "Proste"
-        wavy = "2", "Falowane"
-        curly = "3", "Kręcone"
-        coily = "4", "Afro"
+    HAIR_LENGTH = (
+        ("S", "Krótkie"),
+        ("M", "Średnie"),
+        ("L", "Długie"),
+    )
+
+    CURL_TYPE = (
+        ("1", "Proste"),
+        ("2", "Falowane"),
+        ("3", "Kręcone"),
+        ("4", "Afro"),
+    )
 
     user = models.OneToOneField(
         User,
@@ -43,28 +49,28 @@ class HairProfile(models.Model):
     plec = models.CharField(
         "Płeć",
         max_length=1,
-        choices=Gender.choices,
-        default=Gender.other,
+        choices=GENDER,
+        default="O",
     )
 
     
     porowatosc = models.CharField(
         "Porowatość",
         max_length=4,
-        choices=Porosity.choices,
-        default=Porosity.medium,
+        choices=POROSITY,
+        default="Med",
     )
     dlugosc = models.CharField(
         "Długość włosów",
         max_length=1,
-        choices=HairLength.choices,
-        default=HairLength.MEDIUM,
+        choices=HAIR_LENGTH,
+        default="M",
     )
     skret = models.CharField(
         "Typ skrętu",
         max_length=1,
-        choices=CurlType.choices,
-        default=CurlType.straight,
+        choices=CURL_TYPE,
+        default="1",
     )
     tluszczenie = models.BooleanField(
         "Przetłuszczająca się skóra głowy",
@@ -91,20 +97,22 @@ class HairProduct(models.Model):
     Produkt do włosów używany w podpowiedzi pielęgnacyjnej.
     """
 
-    class Category(models.TextChoices):
-        szampon = "SH", "Szampon"
-        odzywka = "CO", "Odżywka"
-        maskaa = "MA", "Maska"
-        olejki = "OI", "Olejek"
-        odbezspl = "LI", "Odżywka bez spłukiwania"
-        serum = "SE", "Serum / kuracja"
+    PRODUCT_CATEGORY = (
+        ("SH", "Szampon"),
+        ("CO", "Odżywka"),
+        ("MA", "Maska"),
+        ("OI", "Olejek"),
+        ("LI", "Odżywka bez spłukiwania"),
+        ("SE", "Serum / kuracja"),
+    )
+
 
     name = models.CharField("Nazwa produktu", max_length=150)
     brand = models.CharField("Marka", max_length=100, blank=True)
     category = models.CharField(
         "Kategoria",
         max_length=2,
-        choices=Category.choices,
+        choices=PRODUCT_CATEGORY,
     )
     description = models.TextField("Opis", blank=True)
 
@@ -112,14 +120,14 @@ class HairProduct(models.Model):
     suitable_porosity = models.CharField(
         "Dla jakiej porowatości",
         max_length=4,
-        choices=HairProfile.Porosity.choices,
+        choices=HairProfile.POROSITY,
         blank=True,
         help_text="Co robi produkt dla tego typu porowatości.",
     )
     suitable_curl_type = models.CharField(
         "Dla jakiego typu skrętu",
         max_length=1,
-        choices=HairProfile.CurlType.choices,
+        choices=HairProfile.CURL_TYPE,
         blank=True,
     )
 
@@ -152,13 +160,15 @@ class HairRoutineEntry(models.Model):
     Pojedynczy wpis w kalendarzu pielęgnacji (dzień + co było robione).
     """
 
-    class CareType(models.TextChoices):
-        WASH = "WASH", "Mycie"
-        CONDITIONER = "COND", "Odżywka"
-        MASK = "MASK", "Maska"
-        OIL = "OIL", "Olejowanie"
-        SCALP = "SCALP", "Pielęgnacja skóry głowy"
-        STYLING = "STYLE", "Stylizacja"
+    CARE_TYPE = (
+        ("WASH", "Mycie"),
+        ("COND", "Odżywka"),
+        ("MASK", "Maska"),
+        ("OIL", "Olejowanie"),
+        ("SCALP", "Pielęgnacja skóry głowy"),
+        ("STYLE", "Stylizacja"),
+    )
+
 
     user = models.ForeignKey(
         User,
@@ -169,7 +179,7 @@ class HairRoutineEntry(models.Model):
     care_type = models.CharField(
         "Rodzaj pielęgnacji",
         max_length=6,
-        choices=CareType.choices,
+        choices=CARE_TYPE,
     )
     products_used = models.ManyToManyField(
         HairProduct,
@@ -207,20 +217,20 @@ class HairTip(models.Model):
     porowatosc = models.CharField(
         "Porowatość docelowa",
         max_length=4,
-        choices=HairProfile.Porosity.choices,
+        choices=HairProfile.POROSITY,
         blank=True,
         help_text="Zostaw puste, jeśli porada ogólna.",
     )
     skret = models.CharField(
         "Typ skrętu docelowy",
         max_length=1,
-        choices=HairProfile.CurlType.choices,
+        choices=HairProfile.CURL_TYPE,
         blank=True,
     )
     dlugosc = models.CharField(
         "Długość włosów docelowa",
         max_length=1,
-        choices=HairProfile.HairLength.choices,
+        choices=HairProfile.HAIR_LENGTH,
         blank=True,
     )
 
